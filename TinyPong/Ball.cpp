@@ -30,6 +30,24 @@ NmControlMessage Ball::MakeControlMessage() const {
 	return NmControlMessageBall(xy, velocity);
 }
 
+void Ball::OnCollision(const Object& other, bool isSecondary) {
+	if (other.GetType() == ObjectType::Ball) {
+		if (isSecondary) {
+			Vec2 backup = velocity;
+			velocity = ((Ball&)other).velocity;
+			((Ball&)other).velocity = backup;
+		}
+	} else if (other.GetType() == ObjectType::Paddle) {
+		velocity.x = -velocity.x;
+
+		if (velocity.x > 0.0f) {
+			x = other.GetX() + 1;
+		} else {
+			x = other.GetX() - 1;
+		}
+	}
+}
+
 void Ball::Update(float deltaTime) {
 	if (lastControlMessage) {
 		xy = lastControlMessage->ball.xy;
@@ -40,9 +58,15 @@ void Ball::Update(float deltaTime) {
 
 	if (x < 0.0f || x >= (float)Game::arenaWidth) {
 		velocity.x = -velocity.x;
+
+		OnOutOfBounds();
 	}
 
 	if (y < 0.0f || y >= (float)Game::arenaHeight) {
 		velocity.y = -velocity.y;
 	}
+}
+
+void Ball::OnOutOfBounds() {
+	xy = Vec2(game.arenaWidth / 2, game.arenaHeight / 2);
 }

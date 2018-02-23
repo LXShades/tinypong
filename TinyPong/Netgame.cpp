@@ -101,7 +101,6 @@ void Netgame::Update() {
 
 bool Netgame::Connect() {
 	sockaddr_in sa;
-	INT length;
 	
 	memset(&sa, 0, sizeof(sa));
 	sa.sin_family = AF_INET;

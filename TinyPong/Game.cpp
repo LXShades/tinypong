@@ -109,6 +109,16 @@ void Game::Update() {
 	for (Object* object : objects) {
 		object->Update(deltaTime);
 	}
+
+	// Update collisions
+	for (int objA = 0; objA < objects.size(); ++objA) {
+		for (int objB = objA + 1; objB < objects.size(); ++objB) {
+			if (objects[objA]->IsColliding(*objects[objB])) {
+				objects[objA]->OnCollision(*objects[objB]);
+				objects[objB]->OnCollision(*objects[objA], true);
+			}
+		}
+	}
 }
 
 void Game::Render() {
@@ -118,6 +128,11 @@ void Game::Render() {
 	SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(sdlRenderer);
 
+	// Render the arena edges
+	SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
+	SDL_RenderDrawLine(sdlRenderer, 0, 0, arenaWidth, 0);
+	SDL_RenderDrawLine(sdlRenderer, 0, arenaHeight-1, arenaWidth, arenaHeight-1);
+
 	// Render the paddles
 	for (Object* object : objects) {
 		object->Render();
@@ -125,7 +140,7 @@ void Game::Render() {
 
 	// Prepare to render
 	SDL_SetRenderTarget(sdlRenderer, nullptr);
-	SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
 	SDL_RenderClear(sdlRenderer);
 
 	// Render in a 1:1 centre box

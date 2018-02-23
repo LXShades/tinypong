@@ -113,9 +113,10 @@ struct NmConfirmConnect {
 struct NmControlMessagePaddle {
 public:
 	NmControlMessagePaddle() = default;
-	NmControlMessagePaddle(float newPosition) : position(newPosition) {};
+	NmControlMessagePaddle(float newPosition, float targetPosition) : position(newPosition), targetPosition(targetPosition) {};
 
 	float position;
+	float targetPosition;
 };
 
 struct NmControlMessageBall {

@@ -9,6 +9,9 @@ enum class ObjectType {
 
 class Object {
 public:
+	Object() : lastControlMessage(nullptr) {};
+	Object(const Object& other) : xy(other.xy), width(other.width), height(other.height), id(other.id) {}
+
 	~Object() {
 		delete lastControlMessage;
 	}
@@ -22,12 +25,31 @@ public:
 
 	virtual ObjectType GetType() const = 0;
 
+	virtual void OnCollision(const Object& other, bool isSecondary = false);
+
+	bool IsColliding(const Object& other);
+
 	int GetId() const {
 		return id;
 	}
 
 	void SetId(int id) {
 		this->id = id;
+	}
+
+	void SetX(float x) {
+		this->x = x;
+	}
+
+	void SetY(float y) {
+		this->y = y;
+	}
+
+	float GetX() const {
+		return x;
+	}
+	float GetY() const {
+		return y;
 	}
 
 protected:

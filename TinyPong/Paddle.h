@@ -17,4 +17,7 @@ public:
 	}
 private:
 	int startWidth, startHeight;
+
+	float velocity;
+	float targetY;
 };

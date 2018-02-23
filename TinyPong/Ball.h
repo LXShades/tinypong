@@ -10,6 +10,10 @@ public:
 
 	NmControlMessage MakeControlMessage() const;
 
+	void OnOutOfBounds();
+
+	void OnCollision(const Object& other, bool isSecondary) override;
+
 	ObjectType GetType() const override {
 		return ObjectType::Ball;
 	}

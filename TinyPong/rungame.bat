@@ -1,0 +1,1 @@
+start Debug/tinypong.exe
